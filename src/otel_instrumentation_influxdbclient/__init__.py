@@ -19,7 +19,7 @@ from opentelemetry.semconv._incubating.attributes.net_attributes import (
     NET_PEER_NAME,
 )
 from opentelemetry.semconv.attributes.error_attributes import ERROR_TYPE
-from opentelemetry.trace import StatusCode, Tracer, TracerProvider, get_tracer
+from opentelemetry.trace import StatusCode, Tracer, get_tracer
 from wrapt import wrap_function_wrapper
 
 from .package import _instruments

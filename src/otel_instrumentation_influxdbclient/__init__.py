@@ -19,7 +19,7 @@ from opentelemetry.semconv._incubating.attributes.net_attributes import (
     NET_PEER_NAME,
 )
 from opentelemetry.semconv.attributes.error_attributes import ERROR_TYPE
-from opentelemetry.trace import Tracer, TracerProvider, get_tracer, StatusCode
+from opentelemetry.trace import StatusCode, Tracer, TracerProvider, get_tracer
 from wrapt import wrap_function_wrapper
 
 from .package import _instruments
@@ -105,6 +105,7 @@ def _instrument(tracer: Tracer):
                 if err.response:
                     span.set_attribute(DB_RESPONSE_STATUS_CODE, err.response.status)
                 raise
+
     wrap_function_wrapper(
         "influxdb_client.client.write_api", "WriteApi.write", _traced_write_command
     )

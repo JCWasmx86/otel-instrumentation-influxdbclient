@@ -29,3 +29,6 @@ dependencies = [
 Homepage = "https://github.com/JCWasmx86/otel-instrumentation-influxdbclient"
 Issues = "https://github.com/JCWasmx86/otel-instrumentation-influxdbclient/issues"
 
+[tool.isort]
+profile = "black"
+

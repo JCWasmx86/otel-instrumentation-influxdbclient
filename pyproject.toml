@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools >= 82.0.1"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "otel-instrumentation-influxdbclient"
+version = "0.0.1"
+authors = [
+  { name="JCWasmx86", email="JCWasmx86@t-online.de" },
+]
+description = "A small example package"
+readme = "README.md"
+requires-python = ">=3.14"
+classifiers = [
+    "Programming Language :: Python :: 3.14",
+    "Operating System :: OS Independent",
+]
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+dependencies = [
+    "influxdb-client >= 1.50.0",
+    "opentelemetry-api == 1.40.0",
+    "opentelemetry-sdk == 1.40.0",
+    "opentelemetry-semantic-conventions == 0.61b0",
+    "opentelemetry-instrumentation == 0.61b0",
+]
+
+[project.urls]
+Homepage = "https://github.com/JCWasmx86/otel-instrumentation-influxdbclient"
+Issues = "https://github.com/JCWasmx86/otel-instrumentation-influxdbclient/issues"
+

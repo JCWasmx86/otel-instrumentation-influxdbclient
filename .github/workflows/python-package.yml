@@ -17,6 +17,7 @@ jobs:
           DOCKER_INFLUXDB_INIT_PASSWORD: password
           DOCKER_INFLUXDB_INIT_ORG: influxdata
           DOCKER_INFLUXDB_INIT_BUCKET: dummy
+          DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: abcabc123123
         ports:
           - 8086
     runs-on: ubuntu-latest
@@ -41,16 +42,27 @@ jobs:
           black --check .
           isort --profile black .
           ruff check
+      - name: Install influx cli
+        run: |
+          sudo apt update
+          sudo apt install -y wget
+          wget https://dl.influxdata.com/influxdb/releases/influxdb2-client-2.7.5-linux-amd64.tar.gz
+          tar xvzf influxdb2-client-2.7.5-linux-amd64.tar.gz
+          sudo cp influx /usr/local/bin/
+      - name: Get an access token
+        run: |
+          influx config create --config-name influx-config \
+            --host-url http://localhost:8086 \
+            --org influxdata \
+            --token abcabc123123\
+            --active
+          echo "INFLUXDB_TOKEN=$(influx auth create \
+          --all-access \
+          --host http://localhost:8086 \
+          --org influxdata \
+          --token ${{ secrets.INFLUX_TOKEN }} | sed -n '2 p'| awk '{print $2}')" >> $GITHUB_ENV
+          echo $INFLUXDB_TOKEN
       - name: Test with unittest
         run: |
-          wget https://dl.influxdata.com/influxdb/releases/influxdb2-client-2.7.5-linux-amd64.tar.gz
-          tar xvfz influxdb2-client-2.7.5-linux-amd64.tar.gz
-          export DOCKER_INFLUXDB_INIT_USERNAME=ci_user
-          export DOCKER_INFLUXDB_INIT_PASSWORD=password
-          export INFLUX_HOST=http://localhost:${{ job.services.influxdb.ports['8086'] }}
-          export INFLUX_ORG=influxdata
-          ./influx auth create -o influxdata --all-access --json|jq .token|sed s/\"//g
-          TOKEN=$(./influx auth create -o influxdata --all-access --json|jq .token|sed s/\"//g)
-          echo $TOKEN
           pip install ".[tests]"
           INFLUXDB_TOKEN=$TOKEN INFLUXDB_ORG=influxdata INFLUXDB_URL=http://localhost:${{ job.services.influxdb.ports['8086'] }} python -m unittest

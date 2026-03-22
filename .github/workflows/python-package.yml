@@ -44,8 +44,6 @@ jobs:
           ruff check
       - name: Install influx cli
         run: |
-          sudo apt update
-          sudo apt install -y wget
           wget https://dl.influxdata.com/influxdb/releases/influxdb2-client-2.7.5-linux-amd64.tar.gz
           tar xvzf influxdb2-client-2.7.5-linux-amd64.tar.gz
           sudo cp influx /usr/local/bin/
@@ -60,7 +58,7 @@ jobs:
           --all-access \
           --host http://localhost:8086 \
           --org influxdata \
-          --token ${{ secrets.INFLUX_TOKEN }} | sed -n '2 p'| awk '{print $2}')" >> $GITHUB_ENV
+          --token abcabc123123 | sed -n '2 p'| awk '{print $2}')" >> $GITHUB_ENV
           echo $INFLUXDB_TOKEN
       - name: Test with unittest
         run: |

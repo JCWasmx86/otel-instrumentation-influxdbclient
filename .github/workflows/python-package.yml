@@ -43,4 +43,5 @@ jobs:
         ruff check
     - name: Test with unittest
       run: |
+        pip install ".[tests]"
         INFLUXDB_TOKEN=$(influx auth create -o myorg --all-access|jq .token|sed s/\"//g) INFLUXDB_ORG=influxdata INFLUXDB_URL=http://localhost:${{ job.services.influxdb.ports['8086'] }} python -m unittest || true

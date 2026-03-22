@@ -63,6 +63,5 @@ jobs:
           echo HERE $INFLUXDB_TOKEN
       - name: Test with unittest
         run: |
-          echo $INFLUXDB_TOKEN
           pip install ".[tests]"
           INFLUXDB_ORG=influxdata INFLUXDB_URL=http://localhost:${{ job.services.influxdb.ports['8086'] }} python -m unittest

@@ -54,11 +54,12 @@ jobs:
             --org influxdata \
             --token abcabc123123\
             --active
-          echo "INFLUXDB_TOKEN=$(influx auth create \
+          influx auth create \
           --all-access \
           --host http://localhost:${{ job.services.influxdb.ports['8086'] }} \
           --org influxdata \
-          --token abcabc123123 --json |jq '.token'| tr -d '"')" >> $GITHUB_ENV
+          --token abcabc123123 --json |jq '.token'| tr -d '"'
+          echo "INFLUXDB_TOKEN=" >> $GITHUB_ENV
           echo $INFLUXDB_TOKEN
       - name: Test with unittest
         run: |

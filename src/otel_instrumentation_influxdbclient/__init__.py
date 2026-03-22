@@ -48,7 +48,7 @@ def _instrument(tracer: Tracer):
             f"QUERY {org}", kind=trace.SpanKind.CLIENT
         ) as span:
             span.set_attribute(DB_SYSTEM, "influxdb")
-            span.set_attribute(DB_OPERATION_NAME, "WRITE")
+            span.set_attribute(DB_OPERATION_NAME, "QUERY")
             url = instance._influxdb_client.url
             span.set_attribute(NET_PEER_NAME, url)
             try:

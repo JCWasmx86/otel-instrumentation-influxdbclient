@@ -8,7 +8,17 @@ on:
 
 jobs:
   build:
-
+    services:
+      influxdb:
+        image: influxdb:2.8.0
+        env:
+          DOCKER_INFLUXDB_INIT_MODE: setup
+          DOCKER_INFLUXDB_INIT_USERNAME: ci_user
+          DOCKER_INFLUXDB_INIT_PASSWORD: password
+          DOCKER_INFLUXDB_INIT_ORG: influxdata
+          DOCKER_INFLUXDB_INIT_BUCKET: dummy
+        ports:
+          - 8086
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -16,14 +26,6 @@ jobs:
         python-version: ["3.14"]
 
     steps:
-    - name: Setup InfluxDB
-      uses: influxdata/influxdb-action@v3
-      with:
-        influxdb_version: 2.8.0
-        influxdb_org: influxdata
-        influxdb_user: ci_user
-        influxdb_password: password
-        influxdb_bucket: dummy
     - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
@@ -41,4 +43,4 @@ jobs:
         ruff check
     - name: Test with unittest
       run: |
-        INFLUXDB_TOKEN=$(influx auth create -o myorg --all-access|jq .token|sed s/\"//g) INFLUXDB_ORG=influxdata python -m unittest || true
+        INFLUXDB_TOKEN=$(influx auth create -o myorg --all-access|jq .token|sed s/\"//g) INFLUXDB_ORG=influxdata INFLUXDB_URL=http://localhost:${{ job.services.influxdb.ports['8086'] }} python -m unittest || true

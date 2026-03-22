@@ -47,6 +47,7 @@ jobs:
           tar xvfz influxdb2-client-2.7.5-linux-amd64.tar.gz
           export DOCKER_INFLUXDB_INIT_USERNAME=ci_user
           export DOCKER_INFLUXDB_INIT_PASSWORD=password
+          export INFLUXDB_URL=http://localhost:${{ job.services.influxdb.ports['8086'] }}
           ./influx auth create -o influxdata --all-access --json|jq .token|sed s/\"//g
           TOKEN=$(./influx auth create -o influxdata --all-access --json|jq .token|sed s/\"//g)
           echo $TOKEN

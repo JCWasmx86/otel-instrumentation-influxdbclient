@@ -2,9 +2,9 @@ name: Python package
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
@@ -26,22 +26,22 @@ jobs:
         python-version: ["3.14"]
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        python -m pip install black isort ruff
-        python -m pip install .
-    - name: Lint it
-      run: |
-        black --check .
-        isort --profile black .
-        ruff check
-    - name: Test with unittest
-      run: |
-        pip install ".[tests]"
-        INFLUXDB_TOKEN=$(influx auth create -o myorg --all-access|jq .token|sed s/\"//g) INFLUXDB_ORG=influxdata INFLUXDB_URL=http://localhost:${{ job.services.influxdb.ports['8086'] }} python -m unittest || true
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install black isort ruff
+          python -m pip install .
+      - name: Lint it
+        run: |
+          black --check .
+          isort --profile black .
+          ruff check
+      - name: Test with unittest
+        run: |
+          pip install ".[tests]"
+          INFLUXDB_TOKEN=$(influx auth create -o myorg --all-access|jq .token|sed s/\"//g) INFLUXDB_ORG=influxdata INFLUXDB_URL=http://localhost:${{ job.services.influxdb.ports['8086'] }} python -m unittest

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "otel-instrumentation-influxdbclient"
-version = "0.0.1"
+version = "1.40.0"
 authors = [
   { name="JCWasmx86", email="JCWasmx86@t-online.de" },
 ]

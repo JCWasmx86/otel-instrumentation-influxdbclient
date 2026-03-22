@@ -43,5 +43,12 @@ jobs:
           ruff check
       - name: Test with unittest
         run: |
+          wget https://dl.influxdata.com/influxdb/releases/influxdb2-client-2.7.5-linux-amd64.tar.gz
+          tar xvfz influxdb2-client-2.7.5-linux-amd64.tar.gz
+          export DOCKER_INFLUXDB_INIT_USERNAME=ci_user
+          export DOCKER_INFLUXDB_INIT_PASSWORD=password
+          ./influx auth create -o influxdata --all-access --json|jq .token|sed s/\"//g
+          TOKEN=$(./influx auth create -o influxdata --all-access --json|jq .token|sed s/\"//g)
+          echo $TOKEN
           pip install ".[tests]"
-          INFLUXDB_TOKEN=$(influx auth create -o myorg --all-access|jq .token|sed s/\"//g) INFLUXDB_ORG=influxdata INFLUXDB_URL=http://localhost:${{ job.services.influxdb.ports['8086'] }} python -m unittest
+          INFLUXDB_TOKEN=$TOKEN INFLUXDB_ORG=influxdata INFLUXDB_URL=http://localhost:${{ job.services.influxdb.ports['8086'] }} python -m unittest

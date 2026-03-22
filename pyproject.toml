@@ -32,3 +32,7 @@ Issues = "https://github.com/JCWasmx86/otel-instrumentation-influxdbclient/issue
 [tool.isort]
 profile = "black"
 
+[project.optional-dependencies]  
+tests = [
+    "opentelemetry-test-utils",
+]  

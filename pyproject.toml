@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "otel-instrumentation-influxdbclient"
-version = "1.40.0"
+version = "1.41.0"
 authors = [
   { name="JCWasmx86", email="JCWasmx86@t-online.de" },
 ]
@@ -19,10 +19,10 @@ license = "Apache-2.0"
 license-files = ["LICENSE"]
 dependencies = [
     "influxdb-client >= 1.50.0",
-    "opentelemetry-api == 1.40.0",
-    "opentelemetry-sdk == 1.40.0",
-    "opentelemetry-semantic-conventions == 0.61b0",
-    "opentelemetry-instrumentation == 0.61b0",
+    "opentelemetry-api == 1.41.0",
+    "opentelemetry-sdk == 1.41.0",
+    "opentelemetry-semantic-conventions == 0.62b0",
+    "opentelemetry-instrumentation == 0.62b0",
 ]
 
 [project.urls]

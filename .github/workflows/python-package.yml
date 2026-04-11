@@ -60,7 +60,6 @@ jobs:
           --org influxdata \
           --token abcabc123123 --json |jq '.token'| tr -d '"')
           echo "INFLUXDB_TOKEN=$INFLUXDB_TOKEN" >> $GITHUB_ENV
-          echo HERE $INFLUXDB_TOKEN
       - name: Test with unittest
         run: |
           pip install ".[tests]"
